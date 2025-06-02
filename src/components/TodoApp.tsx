@@ -9,6 +9,9 @@ import { TodoFilter as TodoFilterComponent } from './TodoFilter';
 export function TodoApp() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [filter, setFilter] = useState<TodoFilter>('all');
+  const [recentlyDeleted, setRecentlyDeleted] = useState<Todo[]>([]);
+  const [lastDeletedTodo, setLastDeletedTodo] = useState<Todo | null>(null);
+  const [deleteTimeoutId, setDeleteTimeoutId] = useState<NodeJS.Timeout | null>(null);
 
   const addTodo = (text: string) => {
     const newTodo: Todo = {
@@ -29,7 +32,41 @@ export function TodoApp() {
   };
 
   const deleteTodo = (id: string) => {
-    setTodos(prev => prev.filter(todo => todo.id !== id));
+    const todoToDelete = todos.find(todo => todo.id === id);
+    if (todoToDelete) {
+      // Clear any existing timeout
+      if (deleteTimeoutId) {
+        clearTimeout(deleteTimeoutId);
+      }
+      
+      setTodos(prev => prev.filter(todo => todo.id !== id));
+      setRecentlyDeleted(prev => [todoToDelete, ...prev]);
+      setLastDeletedTodo(todoToDelete);
+      
+      // Auto-remove from recently deleted after 10 seconds
+      const timeoutId = setTimeout(() => {
+        setRecentlyDeleted(prev => prev.filter(todo => todo.id !== id));
+        setLastDeletedTodo(prev => prev?.id === id ? null : prev);
+        setDeleteTimeoutId(null);
+      }, 10000);
+      
+      setDeleteTimeoutId(timeoutId);
+    }
+  };
+
+  const restoreTodo = (id: string) => {
+    const todoToRestore = recentlyDeleted.find(todo => todo.id === id);
+    if (todoToRestore) {
+      // Clear the auto-delete timeout
+      if (deleteTimeoutId) {
+        clearTimeout(deleteTimeoutId);
+        setDeleteTimeoutId(null);
+      }
+      
+      setRecentlyDeleted(prev => prev.filter(todo => todo.id !== id));
+      setTodos(prev => [todoToRestore, ...prev]);
+      setLastDeletedTodo(null);
+    }
   };
 
   const editTodo = (id: string, newText: string) => {
@@ -71,6 +108,20 @@ export function TodoApp() {
             onClearCompleted={clearCompleted}
           />
         </div>
+
+        {lastDeletedTodo && (
+          <div className="mt-4 p-3 bg-orange-100 dark:bg-orange-900 border border-orange-200 dark:border-orange-700 rounded-lg flex items-center justify-between">
+            <span className="text-orange-800 dark:text-orange-200">
+              「{lastDeletedTodo.text}」を削除しました
+            </span>
+            <button
+              onClick={() => restoreTodo(lastDeletedTodo.id)}
+              className="px-3 py-1 text-sm bg-orange-600 hover:bg-orange-700 text-white rounded transition-colors duration-200"
+            >
+              取り消し
+            </button>
+          </div>
+        )}
 
         <div className="mt-6 space-y-2">
           {filteredTodos.length === 0 ? (
