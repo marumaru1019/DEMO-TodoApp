@@ -1,5 +1,7 @@
 # DevOps Demo - Next.js Project
 
+*Read this in other languages: [日本語](README.ja.md)*
+
 This is a [Next.js](https://nextjs.org) project built with TypeScript and Tailwind CSS, bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## 🚀 Tech Stack
@@ -29,54 +31,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 You can start editing the page by modifying `src/app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## 🇯🇵 はじめに
-
-### 前提条件
-- Node.js 20.0.0以上
-- npm 10.0.0以上
-
-### インストール手順
-プロジェクトのクローン後、以下のコマンドで依存パッケージをインストールします：
-
-```bash
-npm install
-# または
-npm ci
-```
-
-### 開発サーバー起動
-以下のコマンドで開発サーバーを起動できます：
-
-```bash
-npm run dev
-```
-
-ブラウザで [http://localhost:3000](http://localhost:3000) を開くとアプリケーションが表示されます。
-
-### テスト実行
-現在、このプロジェクトにはテストスクリプトが設定されていません。テスト環境の構築が必要です。
-
-### ビルド
-本番環境用のビルドは以下のコマンドで実行できます：
-
-```bash
-npm run build
-```
-
-ビルド後、`npm start`で本番モードでアプリケーションを起動できます。
-
-### プロジェクト構成
-```
-devops-demo/
-├── public/           # 静的アセット
-├── src/
-│   ├── app/         # Appルーターのページとレイアウト
-│   ├── components/  # 再利用可能なコンポーネント
-│   └── lib/         # ユーティリティ関数
-├── .github/         # GitHub設定
-└── package.json     # 依存関係とスクリプト
-```
 
 ## 📁 Project Structure
 
