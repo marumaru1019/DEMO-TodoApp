@@ -12,7 +12,21 @@ This is a [Next.js](https://nextjs.org) project built with TypeScript and Tailwi
 
 ## 🛠️ Getting Started
 
-First, run the development server:
+### 📋 Prerequisites
+- Node.js 18.17.0 or higher
+- npm 10.2.3 or higher
+
+### 🔧 Installation
+After cloning the project, install the dependencies with one of the following commands:
+
+```bash
+npm install
+# or
+npm ci
+```
+
+### 🚀 Development Server
+Start the development server with:
 
 ```bash
 npm run dev
@@ -29,6 +43,74 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 You can start editing the page by modifying `src/app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+### 🧪 Testing
+Run the tests with:
+
+```bash
+npx jest
+```
+
+### 🏗️ Building
+To build the application for production:
+
+```bash
+npm run build
+```
+
+After building, you can start the application in production mode with `npm start`.
+
+## 🇯🇵 はじめに
+
+### 前提条件
+- Node.js 18.17.0以上
+- npm 10.2.3以上
+
+### インストール手順
+プロジェクトのクローン後、以下のコマンドで依存パッケージをインストールします：
+
+```bash
+npm install
+# または
+npm ci
+```
+
+### 開発サーバー起動
+以下のコマンドで開発サーバーを起動できます：
+
+```bash
+npm run dev
+```
+
+ブラウザで [http://localhost:3000](http://localhost:3000) を開くとアプリケーションが表示されます。
+
+### テスト実行
+以下のコマンドでテストを実行できます：
+
+```bash
+npx jest
+```
+
+### ビルド
+本番環境用のビルドは以下のコマンドで実行できます：
+
+```bash
+npm run build
+```
+
+ビルド後、`npm start`で本番モードでアプリケーションを起動できます。
+
+### プロジェクト構成
+```
+devops-demo/
+├── public/           # 静的アセット
+├── src/
+│   ├── app/         # Appルーターのページとレイアウト
+│   ├── components/  # 再利用可能なコンポーネント
+│   └── lib/         # ユーティリティ関数
+├── .github/         # GitHub設定
+└── package.json     # 依存関係とスクリプト
+```
 
 ## 📁 Project Structure
 
