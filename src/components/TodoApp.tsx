@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Todo, TodoFilter } from '@/types/todo';
 import { TodoItem } from './TodoItem';
 import { TodoInput } from './TodoInput';
@@ -9,6 +9,8 @@ import { TodoFilter as TodoFilterComponent } from './TodoFilter';
 export function TodoApp() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [filter, setFilter] = useState<TodoFilter>('all');
+  const [lastDeletedTodo, setLastDeletedTodo] = useState<Todo | null>(null);
+  const [undoTimeout, setUndoTimeout] = useState<NodeJS.Timeout | null>(null);
 
   const addTodo = (text: string) => {
     const newTodo: Todo = {
@@ -29,7 +31,36 @@ export function TodoApp() {
   };
 
   const deleteTodo = (id: string) => {
-    setTodos(prev => prev.filter(todo => todo.id !== id));
+    const todoToDelete = todos.find(todo => todo.id === id);
+    if (todoToDelete) {
+      // Remove from active todos
+      setTodos(prev => prev.filter(todo => todo.id !== id));
+      
+      // Store for undo functionality
+      setLastDeletedTodo(todoToDelete);
+      
+      // Clear any existing timeout
+      if (undoTimeout) {
+        clearTimeout(undoTimeout);
+      }
+      
+      // Set timeout to clear undo option after 5 seconds
+      const timeout = setTimeout(() => {
+        setLastDeletedTodo(null);
+      }, 5000);
+      setUndoTimeout(timeout);
+    }
+  };
+
+  const restoreTodo = () => {
+    if (lastDeletedTodo) {
+      setTodos(prev => [lastDeletedTodo, ...prev]);
+      setLastDeletedTodo(null);
+      if (undoTimeout) {
+        clearTimeout(undoTimeout);
+        setUndoTimeout(null);
+      }
+    }
   };
 
   const editTodo = (id: string, newText: string) => {
@@ -43,6 +74,15 @@ export function TodoApp() {
   const clearCompleted = () => {
     setTodos(prev => prev.filter(todo => !todo.completed));
   };
+
+  // Clean up timeout on component unmount
+  useEffect(() => {
+    return () => {
+      if (undoTimeout) {
+        clearTimeout(undoTimeout);
+      }
+    };
+  }, [undoTimeout]);
 
   const filteredTodos = todos.filter(todo => {
     if (filter === 'active') return !todo.completed;
@@ -71,6 +111,22 @@ export function TodoApp() {
             onClearCompleted={clearCompleted}
           />
         </div>
+
+        {lastDeletedTodo && (
+          <div className="mt-4 p-3 bg-orange-100 dark:bg-orange-900 border border-orange-200 dark:border-orange-700 rounded-lg">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-orange-800 dark:text-orange-200">
+                「{lastDeletedTodo.text}」を削除しました
+              </span>
+              <button
+                onClick={restoreTodo}
+                className="px-3 py-1 text-sm bg-orange-500 hover:bg-orange-600 text-white rounded transition-colors duration-200"
+              >
+                取り消し
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className="mt-6 space-y-2">
           {filteredTodos.length === 0 ? (
