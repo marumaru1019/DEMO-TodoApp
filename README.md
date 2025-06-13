@@ -30,6 +30,58 @@ You can start editing the page by modifying `src/app/page.tsx`. The page auto-up
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## 🇯🇵 はじめに
+
+### 前提条件
+- Node.js 18.17.0以上
+- npm 10.2.3以上
+
+### インストール手順
+プロジェクトのクローン後、以下のコマンドで依存パッケージをインストールします：
+
+```bash
+npm install
+# または
+npm ci
+```
+
+### 開発サーバー起動
+以下のコマンドで開発サーバーを起動できます：
+
+```bash
+npm run dev
+```
+
+ブラウザで [http://localhost:3000](http://localhost:3000) を開くとアプリケーションが表示されます。
+
+### テスト実行
+以下のコマンドでテストを実行できます：
+
+```bash
+npm test
+```
+
+### ビルド
+本番環境用のビルドは以下のコマンドで実行できます：
+
+```bash
+npm run build
+```
+
+ビルド後、`npm start`で本番モードでアプリケーションを起動できます。
+
+### プロジェクト構成
+```
+devops-demo/
+├── public/           # 静的アセット
+├── src/
+│   ├── app/         # Appルーターのページとレイアウト
+│   ├── components/  # 再利用可能なコンポーネント
+│   └── lib/         # ユーティリティ関数
+├── .github/         # GitHub設定
+└── package.json     # 依存関係とスクリプト
+```
+
 ## 📁 Project Structure
 
 ```
